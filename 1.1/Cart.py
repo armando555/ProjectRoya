@@ -259,7 +259,7 @@ def main():
     # Read dataSet from file into a dataframe
     # Any dataset can be used, as long as the last column is the result
     # And the columns have headings, with the last column called 'type'
-    dataSet = pd.read_csv('/home/a_rios/Escritorio/Clases_Datos/Project/1.1/data_set.csv')
+    dataSet = pd.read_csv('data_set.csv')
     # dataSet = pd.read_csv('datasets/illness.csv')
 
     results = []
@@ -314,7 +314,7 @@ if __name__ == '__main__':
     tiempo=tiempoFinal-tiempoInicial
     features=[]
     labels=[]
-    direccion='/home/a_rios/Escritorio/Clases_Datos/Project/1.1/data_set.csv'
+    direccion='data_set.csv'
     '''
     el ciclo toma cada linea hace un split de ella y la lleva a una lista que se agrega
     a la lista features, pero antes le quita la etiqueta "yes" o "no" para poder
