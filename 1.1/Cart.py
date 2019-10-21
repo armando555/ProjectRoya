@@ -9,9 +9,8 @@ import Node
 import InputOutput as rg
 from time import time
 from LinkedList import LinkedList as Lista
-
 targetEntropy = 0
-
+direccion=input("Ingrese la dirección del archivo")
 # Partition dataSet into training and test partitions
 # dataFrame: dataset we want to partition
 # test_percentage: percentage of the dataset we want to use for testing
@@ -254,12 +253,12 @@ def test_tree(data, labels, tree):
 
     return incorrect, correct, np.round(100 - (incorrect / (incorrect + correct)) * 100)
 
-
 def main():
     # Read dataSet from file into a dataframe
     # Any dataset can be used, as long as the last column is the result
     # And the columns have headings, with the last column called 'type'
-    dataSet = pd.read_csv('data_set.csv')
+    
+    dataSet = pd.read_csv(direccion)
     # dataSet = pd.read_csv('datasets/illness.csv')
 
     results = []
@@ -270,9 +269,11 @@ def main():
     # -> classifies the test_data using this decision tree
     # -> gets the accuracy of the decision tree
     # -> gets the average accuracy, over all the iterations
+    arbol=[]
     for i in range(tests):
         train_data, test_data = partitionData(dataSet, 0.3) # random partitions
         tree = train(train_data) # make tree
+        arbol.append(tree)
         types = test_data['label'] # get types column from test_data
         del test_data['label'] # deletes labels from test_data so it cannot be used in classification
 
@@ -296,6 +297,8 @@ def main():
 
     print("Average Accuracy after " + str(tests) + " runs")
     print(average)
+    print(arbol)
+    
 
 
 #--------------------------------------------------------------------------------------MEMORY IN MB--------------------------------
@@ -314,14 +317,13 @@ if __name__ == '__main__':
     tiempo=tiempoFinal-tiempoInicial
     features=[]
     labels=[]
-    direccion='data_set.csv'
     '''
     el ciclo toma cada linea hace un split de ella y la lleva a una lista que se agrega
     a la lista features, pero antes le quita la etiqueta "yes" o "no" para poder
     emplear el machine learning después, y esta etiqueta se guarda en labels
     '''
     # la función leerArchivo fue creada por mi para verificar que el archivo existe e abrirlo
-    with rg.leerArchivo(direccion) as archivo:
+    with rg.leerArchivo(direccion)as archivo:
         for linea in archivo:
             linea=linea.split(",")
             if linea[6]=="yes\n":
