@@ -236,24 +236,22 @@ def printTree(tree, space=''):
         printTree(tree.rb, space + ''+" ") #Print right child
 
 
-rootDir = ""
-def exportTree(tree, node, g):
+def exportTree(tree, node,g):
     #leaf Node
     if (tree.results != None):
-       node_temp = pydot.Node(str(tree.results),shape="plaintext")
+       node_temp = pydot.Node(str(tree.results))
        g.add_node(node_temp)
        edge = pydot.Edge(str(node),str(node_temp))
-       g.add_edge(edge)
-
+       g.add_edge(edge) 
     else:
-       node_temp = pydot.Node((str(tree.colName)+' : '+str(tree.value)), style="filled",fillcolor="green")
+       temp = tree.colName+' : '+str(tree.value)
+       node_temp = pydot.Node(temp)
+       edge_temp = pydot.Edge(str(node),str(node_temp))
        g.add_node(node_temp)
-       edge = pydot.Edge(str(node),str(node_temp))
-       g.add_edge(edge)
-       exportTree(tree.lb, node_temp, g)
-       exportTree(tree.rb, node_temp, g)
-
-
+       g.add_edge(edge_temp)
+       exportTree(tree.lb,node_temp,g)
+       exportTree(tree.rb,node_temp,g)
+       
 # Tests the tree and returns how accurate the classifier is
 # data: test data we want to classify
 # labels: list of labels that we want to cross reference the classifier result with (stripped out of test_data before it is passed in)
@@ -295,11 +293,17 @@ def main():
     # -> gets the accuracy of the decision tree
     # -> gets the average accuracy, over all the iterations
     for i in range(tests):
-        train_data, test_data = partitionData(dataSet, 0.9) # random partitions
+        train_data, test_data = partitionData(dataSet, 0.3) # random partitions
         tree = train(train_data) # make tree
         types = test_data['label'] # get types column from test_data
         del test_data['label'] # deletes labels from test_data so it cannot be used in classification
-
+        #begin PDF EXPORT
+        g=pydot.Dot(graph_type="digraph")
+        node = pydot.Node("Root")
+        g.add_node(node)
+        exportTree(tree,node,g)
+        g.write_png("tree.png")
+        #end PDF EXPORT
         incorrect, correct, accuracy = test_tree(test_data, types, tree) # test the tree
         results.append(accuracy)
 
@@ -309,17 +313,7 @@ def main():
         printTree(tree)
         
         #print("Tree.lb "+str(tree.lb))
-        #print("Tree.lb "+str(tree.rb))
-        #begin PDF EXPORT
-        g=pydot.Dot(graph_type="digraph")
-        node = pydot.Node(str(tree.value), style="filled", fillcolor="green")
-        g.add_node(node)
-        exportTree(tree, node, g)
-        #im = Image(g.create_png())
-        #display(im)
-        g.write_pdf("tree.pdf")
-        
-        #end PDF EXPORT
+        #print("Tree.lb "+str(tree.rb))      
         print()
         print("Correctly Classified: " + str(correct) + " / " + str(correct+incorrect))
         print("Accuracy: " + str(accuracy))
