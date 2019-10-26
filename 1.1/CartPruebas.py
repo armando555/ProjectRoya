@@ -13,6 +13,7 @@ from reportlab.pdfgen import canvas
 import graphviz
 import pydot
 import os
+from IPython.display import Image, display
 
 targetEntropy = 0
 
@@ -223,7 +224,6 @@ def classify(target_row, tree):
 # space: spacing we want to use for child nodes
 def printTree(tree, space=''):
     # Leaf node
-    c = canvas.Canvas ("salida.pdf")
     if tree.results != None:
         print(space+str(tree.results))
 
@@ -234,7 +234,21 @@ def printTree(tree, space=''):
         print(space + '└─>Right:¬ ') #Print 'R' for right child
         printTree(tree.rb, space + ''+" ") #Print right child
 
-def exportTree(""):
+def exportTree(tree,node,g):
+    #leaf Node
+    if (tree.results != None):
+       node_temp = str(tree.results)
+       g.add_node(pydot.Node(node_temp))
+       edge = pydot.Edge(node,node_temp)
+       g.add_edge(edge)
+    else:
+       temp = tree.colName+' : '+str(tree.value)
+       node_temp = temp
+       edge_temp = pydot.Edge(node,node_temp)
+       g.add_node(pydot.Node(node_temp))
+       g.add_edge(edge_temp)
+       exportTree(tree.lb,node_temp,g)
+       exportTree(tree.rb,node_temp,g)
 
 # Tests the tree and returns how accurate the classifier is
 # data: test data we want to classify
@@ -289,6 +303,15 @@ def main():
         print("Test " + str(i + 1) + "\n------------")
         print("Tree Generated:" + "\n")
         printTree(tree)
+        #begin PDF EXPORT
+        g=pydot.Dot(graph_type="digraph")
+        node = pydot.Node("", style="filled", fillcolor="green")
+        g.add_node(node)
+        exportTree(tree,node,g)
+        g.write_png("salida.png")
+
+
+        #end PDF EXPORT
         print()
         print("Correctly Classified: " + str(correct) + " / " + str(correct+incorrect))
         print("Accuracy: " + str(accuracy))

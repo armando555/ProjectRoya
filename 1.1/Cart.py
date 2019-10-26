@@ -271,7 +271,7 @@ def main():
     # -> gets the accuracy of the decision tree
     # -> gets the average accuracy, over all the iterations
     for i in range(tests):
-        train_data, test_data = partitionData(dataSet, 0.3) # random partitions
+        train_data, test_data = partitionData(dataSet, 0.1) # random partitions
         tree = train(train_data) # make tree
         types = test_data['label'] # get types column from test_data
         del test_data['label'] # deletes labels from test_data so it cannot be used in classification
