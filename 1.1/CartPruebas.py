@@ -10,10 +10,18 @@ import InputOutput as rg
 from time import time
 from LinkedList import LinkedList as Lista
 from reportlab.pdfgen import canvas
+<<<<<<< HEAD
 import graphviz
 import pydot
 import os
 from IPython.display import Image, display
+=======
+#import graphviz
+import pydot
+import os
+from IPython.display import Image, display
+import pydotplus
+>>>>>>> 628143519621e84998a9e084ab6cdfbbb4e8d8ca
 
 targetEntropy = 0
 
