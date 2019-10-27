@@ -12,7 +12,7 @@ from LinkedList import LinkedList as Lista
 targetEntropy = 0
 arbol=None
 bestAccuracy1=0
-direccion=input("Ingrese la dirección del archivo")
+direccion=input("Ingrese la dirección del archivo: ")
 # Partition dataSet into training and test partitions
 # dataFrame: dataset we want to partition
 # test_percentage: percentage of the dataset we want to use for testing
@@ -196,22 +196,27 @@ def train(data):
 # tree: decision tree
 def classify(target_row, tree):
     # base case to stop recursion -> we are at a leaf node
+
     if tree.results != None:
         return tree.results
-
     else:
+        
         # gets the attribute from the target row that we are looking at
-        val = target_row[tree.col]
+        val = float(target_row[tree.col])
         branch = None
         if isinstance(val, int) or isinstance(val, float):
             # checks the value of the tree against the value of the attribute from the target row
             # go down right side
-            if val >= tree.value:
+            if val >= float(tree.value):
                 branch = tree.rb
+
             # go down left side
             else:
                 branch = tree.lb
+
+                
         # recur over the tree again, using either the left or right branch to determine where to go next
+        
         return classify(target_row, branch)
 
 
@@ -274,9 +279,10 @@ def main():
     for i in range(tests):
         train_data, test_data = partitionData(dataSet, 0.3) # random partitions
         tree = train(train_data) # make tree
-        print(type(tree))
+
         types = test_data['label'] # get types column from test_data
         del test_data['label'] # deletes labels from test_data so it cannot be used in classification
+        
         incorrect, correct, accuracy = test_tree(test_data, types, tree) # test the tree
         results.append(accuracy)
 
@@ -284,6 +290,7 @@ def main():
         print("Test " + str(i + 1) + "\n------------")
         print("Tree Generated:" + "\n")
         printTree(tree)
+        entradaNuevaArbol(tree)
         print()
         print("Correctly Classified: " + str(correct) + " / " + str(correct+incorrect))
         print("Accuracy: " + str(accuracy))
@@ -297,17 +304,19 @@ def main():
 
     print("Average Accuracy after " + str(tests) + " runs")
     print(average)
-    entradaNuevaArbol(tree)
-
+    
 
 def entradaNuevaArbol(tree):
-    values = []
     data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\n")
-    data=data.split(",")
+    arg=data.split(",")
+    #argF=[]
+    #print (arg[1])
+
     # Loop over each row in test data frame and get the classification result for each index
-    for row in data:
-        values.append(classify(row, tree))
-    print(values)
+
+    salida = classify(arg,tree)
+    print ("result :"+salida)
+    
 
 
 #--------------------------------------------------------------------------------------MEMORY IN MB--------------------------------
