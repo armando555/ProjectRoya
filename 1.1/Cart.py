@@ -10,6 +10,8 @@ import InputOutput as rg
 from time import time
 from LinkedList import LinkedList as Lista
 targetEntropy = 0
+arbol=None
+bestAccuracy1=0
 direccion=input("Ingrese la dirección del archivo")
 # Partition dataSet into training and test partitions
 # dataFrame: dataset we want to partition
@@ -252,7 +254,6 @@ def test_tree(data, labels, tree):
             incorrect += 1 #increment the incorrectly classified #
 
     return incorrect, correct, np.round(100 - (incorrect / (incorrect + correct)) * 100)
-
 def main():
     # Read dataSet from file into a dataframe
     # Any dataset can be used, as long as the last column is the result
@@ -269,14 +270,13 @@ def main():
     # -> classifies the test_data using this decision tree
     # -> gets the accuracy of the decision tree
     # -> gets the average accuracy, over all the iterations
-    arbol=[]
+    tree=""
     for i in range(tests):
-        train_data, test_data = partitionData(dataSet, 0.1) # random partitions
+        train_data, test_data = partitionData(dataSet, 0.3) # random partitions
         tree = train(train_data) # make tree
-        arbol.append(tree)
+        print(type(tree))
         types = test_data['label'] # get types column from test_data
         del test_data['label'] # deletes labels from test_data so it cannot be used in classification
-
         incorrect, correct, accuracy = test_tree(test_data, types, tree) # test the tree
         results.append(accuracy)
 
@@ -297,8 +297,17 @@ def main():
 
     print("Average Accuracy after " + str(tests) + " runs")
     print(average)
-    print(arbol)
-    
+    entradaNuevaArbol(tree)
+
+
+def entradaNuevaArbol(tree):
+    values = []
+    data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\n")
+    data=data.split(",")
+    # Loop over each row in test data frame and get the classification result for each index
+    for row in data:
+        values.append(classify(row, tree))
+    print(values)
 
 
 #--------------------------------------------------------------------------------------MEMORY IN MB--------------------------------
@@ -397,5 +406,7 @@ if __name__ == '__main__':
     print("MEMORIA EN MB: \n",memoria)
     print()
     #PROMEDIO DE LOS TIEMPOS
-    promedio=(timeDelete+timeSearch+tiempoImprimir+timeAdd)/4
+    promedio=(timeDelete+timeSearch+tiempoImprimir+timeAdd+timeReplace)/5
     print("EL PROMEDIO DE LOS TIEMPOS ES: \n",promedio)
+    feature_names="ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity"
+    
