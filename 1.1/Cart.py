@@ -12,6 +12,7 @@ from LinkedList import LinkedList as Lista
 targetEntropy = 0
 arbol=None
 bestAccuracy1=0
+listaAgregarLinkedList=[]
 direccion=input("Ingrese la dirección del archivo: ")
 # Partition dataSet into training and test partitions
 # dataFrame: dataset we want to partition
@@ -276,21 +277,25 @@ def main():
     # -> gets the accuracy of the decision tree
     # -> gets the average accuracy, over all the iterations
     tree=""
+    bestAccuracy1=0
     for i in range(tests):
         train_data, test_data = partitionData(dataSet, 0.3) # random partitions
         tree = train(train_data) # make tree
 
         types = test_data['label'] # get types column from test_data
         del test_data['label'] # deletes labels from test_data so it cannot be used in classification
-        
         incorrect, correct, accuracy = test_tree(test_data, types, tree) # test the tree
         results.append(accuracy)
-
+        print("accuracy=",accuracy)
+        if accuracy>bestAccuracy1:
+            bestAccuracy1=accuracy
+            arbol=tree
+            print(bestAccuracy1)
+            
         # print information to console
         print("Test " + str(i + 1) + "\n------------")
         print("Tree Generated:" + "\n")
         printTree(tree)
-        entradaNuevaArbol(tree)
         print()
         print("Correctly Classified: " + str(correct) + " / " + str(correct+incorrect))
         print("Accuracy: " + str(accuracy))
@@ -301,21 +306,26 @@ def main():
     for r in range(len(results)):
         sum += results[r]
     average = sum/tests
-
+    print(bestAccuracy1)
+    entradaNuevaArbol(arbol)
     print("Average Accuracy after " + str(tests) + " runs")
     print(average)
     
 
 def entradaNuevaArbol(tree):
     data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\n")
-    arg=data.split(",")
-    #argF=[]
-    #print (arg[1])
+    while data != "No":
+        arg=data.split(",")
+        #argF=[]
+        #print (arg[1])
 
-    # Loop over each row in test data frame and get the classification result for each index
-
-    salida = classify(arg,tree)
-    print ("result :"+salida)
+        # Loop over each row in test data frame and get the classification result for each index
+        salida = classify(arg,tree)
+        print ("result :"+salida)
+        data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\nSi no deseas continuar escribe \"No\"\n")
+        datos=data,salida
+        print(datos)
+        listaAgregarLinkedList.append(datos)
     
 
 
@@ -329,6 +339,7 @@ def memoryUsage():
     return mem
 
 if __name__ == '__main__':
+    bestAccuracy1=0
     tiempoInicial=time()
     main()
     tiempoFinal=time()
@@ -355,11 +366,9 @@ if __name__ == '__main__':
     lista=Lista()
     count=0
     timeAddI=time()
-    for feature in features:
-        listaN=feature
-        listaN.append(labels[count])
-        lista.add(listaN)
-        count=count+1
+    for dato in listaAgregarLinkedList:
+        if dato!=None:
+            lista.add(dato)
     timeAddF=time()
     timeAdd=timeAddF-timeAddI
     timeImprimirI=time()
@@ -369,7 +378,7 @@ if __name__ == '__main__':
     print()
     print()
     timeSearchI=time()
-    print(lista.search(features[50]).data)
+    print(lista.search(features[0]).data)
     timeSearchF=time()
     timeSearch=timeSearchF-timeSearchI
     timeDeleteI=time()
