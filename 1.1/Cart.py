@@ -5,7 +5,7 @@
 import pandas as pd
 import numpy as np
 import random as rnd
-import Node 
+import Node
 import InputOutput as rg
 from time import time
 from LinkedList import LinkedList as Lista
@@ -201,7 +201,7 @@ def classify(target_row, tree):
     if tree.results != None:
         return tree.results
     else:
-        
+
         # gets the attribute from the target row that we are looking at
         val = float(target_row[tree.col])
         branch = None
@@ -215,9 +215,9 @@ def classify(target_row, tree):
             else:
                 branch = tree.lb
 
-                
+
         # recur over the tree again, using either the left or right branch to determine where to go next
-        
+
         return classify(target_row, branch)
 
 
@@ -264,7 +264,7 @@ def main():
     # Read dataSet from file into a dataframe
     # Any dataset can be used, as long as the last column is the result
     # And the columns have headings, with the last column called 'type'
-    
+
     dataSet = pd.read_csv(direccion)
     # dataSet = pd.read_csv('datasets/illness.csv')
 
@@ -291,7 +291,7 @@ def main():
             bestAccuracy1=accuracy
             arbol=tree
             print(bestAccuracy1)
-            
+
         # print information to console
         print("Test " + str(i + 1) + "\n------------")
         print("Tree Generated:" + "\n")
@@ -310,23 +310,24 @@ def main():
     entradaNuevaArbol(arbol)
     print("Average Accuracy after " + str(tests) + " runs")
     print(average)
-    
+
 
 def entradaNuevaArbol(tree):
     data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\n")
-    while data != "No":
+    data=data.lower();
+    while data != "no":
         arg=data.split(",")
         #argF=[]
         #print (arg[1])
 
         # Loop over each row in test data frame and get the classification result for each index
-        salida = classify(arg,tree)
+        salida = classify(arg,tree)+'\n'
         print ("result :"+salida)
         data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\nSi no deseas continuar escribe \"No\"\n")
         datos=data,salida
         print(datos)
         listaAgregarLinkedList.append(datos)
-    
+
 
 
 #--------------------------------------------------------------------------------------MEMORY IN MB--------------------------------
@@ -427,4 +428,3 @@ if __name__ == '__main__':
     promedio=(timeDelete+timeSearch+tiempoImprimir+timeAdd+timeReplace)/5
     print("EL PROMEDIO DE LOS TIEMPOS ES: \n",promedio)
     feature_names="ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity"
-    

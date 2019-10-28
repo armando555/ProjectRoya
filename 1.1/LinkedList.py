@@ -6,7 +6,7 @@ class Node:
         self.next=next
     def setData(self, data):
         self.data=data
-class LinkedList: 
+class LinkedList:
     def __init__(self):
         self.head = None
 
@@ -38,7 +38,7 @@ class LinkedList:
             temp=temp.next
         return temp
 
-    def print( self ):
+    def print(self):
         temp = self.head
         while temp.next != None:
             print(temp.data, end =" => ")
@@ -49,4 +49,3 @@ class LinkedList:
         while temp.next!=None and count<index:
             temp=temp.next
         temp.setData(data)
-
