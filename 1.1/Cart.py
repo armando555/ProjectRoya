@@ -269,7 +269,7 @@ def main():
     # dataSet = pd.read_csv('datasets/illness.csv')
 
     results = []
-    tests = 10 # number of times the algorithm will be run (more runs will give a more accurate average accuracy)
+    tests = 5 # number of times the algorithm will be run (more runs will give a more accurate average accuracy)
     # loop to test the tree. Each loop it:
     # -> generates random data partitions
     # -> generates a decision tree
@@ -368,6 +368,7 @@ if __name__ == '__main__':
     timeAddI=time()
     for dato in listaAgregarLinkedList:
         if dato!=None:
+            print(dato)
             lista.add(dato)
     timeAddF=time()
     timeAdd=timeAddF-timeAddI
