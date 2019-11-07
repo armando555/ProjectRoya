@@ -2,6 +2,14 @@
 # Uses Pandas dataFrames for managing the dataset
 # and can be run by running the main in this file
 
+
+'''
+
+based on: 
+ 
+    https://github.com/ddivad195/PyC4.5
+no
+'''
 import pandas as pd
 import numpy as np
 import random as rnd
@@ -269,7 +277,7 @@ def main():
     # dataSet = pd.read_csv('datasets/illness.csv')
 
     results = []
-    tests = 5 # number of times the algorithm will be run (more runs will give a more accurate average accuracy)
+    tests = 3 # number of times the algorithm will be run (more runs will give a more accurate average accuracy)
     # loop to test the tree. Each loop it:
     # -> generates random data partitions
     # -> generates a decision tree
@@ -314,7 +322,7 @@ def main():
 
 def entradaNuevaArbol(tree):
     data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\n")
-    data=data.lower();
+
     while data != "no":
         arg=data.split(",")
         #argF=[]
