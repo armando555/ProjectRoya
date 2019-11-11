@@ -323,14 +323,14 @@ def main():
 def entradaNuevaArbol(tree):
     data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\n")
 
-    while data != "no":
+    while data != "No":
         arg=data.split(",")
         #argF=[]
         #print (arg[1])
 
         # Loop over each row in test data frame and get the classification result for each index
-        salida = classify(arg,tree)+'\n'
-        print ("result :"+salida)
+        salida = classify(arg,tree)
+        print ("result :"+salida+"\n")
         data=input("Ingresa los datos ph,soil_temperature,soil_moisture,illuminance,env_temperature,env_humidity como en el ejemplo separados por comas\nSi no deseas continuar escribe \"No\"\n")
         datos=data,salida
         print(datos)
